@@ -27,13 +27,13 @@ const Posts = [
 // Public functions
 
 // returns the posts array
-const getPosts = () => {
+export const getPosts = () => {
   if (Posts.length === 0) return "You Have No Posts !";
   return Posts;
 };
 
 // adds a new post object to posts
-const addPost = (text) => {
+export const addPost = (text) => {
   // Generate unique post ID
   const newIdNumber = Posts.length + 1;
   const newPostId = `p${newIdNumber}`;
@@ -45,19 +45,20 @@ const addPost = (text) => {
     comments: [],
   };
 
-  postIdCounter += Posts.length + postIdCounter;
-
   // Add to the Posts array
   Posts.push(newPost);
 };
 
 // removes a post by ID
-const removePost = (postID) => {
-  Posts = Posts.filter((post) => post.id !== postID);
+export const removePost = (postID) => {
+  const index = Posts.findIndex((post) => post.id === postID);
+  if (index !== -1) {
+    Posts.splice(index, 1);
+  }
 };
 
 // adds a comment to a specific post
-const addComment = (postID, text) => {
+export const addComment = (postID, text) => {
   const post = Posts.find((p) => postID === p);
   if (post) {
     const newCommentId = `c${++commentIdCounter}`;
@@ -69,7 +70,7 @@ const addComment = (postID, text) => {
 };
 
 // removes a comment from a post
-const removeComment = (postID, commentID) => {
+export const removeComment = (postID, commentID) => {
   const remove = Posts.find((r) => postID === r.id);
   if (remove) {
     remove.comments = remove.comments.filter((c) => c.id !== commentID);
