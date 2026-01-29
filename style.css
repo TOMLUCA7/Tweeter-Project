@@ -33,7 +33,7 @@ body {
 
 /* Main container */
 .container-body {
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -87,12 +87,14 @@ body {
 /* Posts container */
 #posts {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 16px;
 }
 
 /* Individual post */
 .post {
+  flex: 1 1 calc(50% - 8px);
+  min-width: 280px;
   background: white;
   border-radius: 16px;
   padding: 20px;
