@@ -1,69 +1,33 @@
 // Manages the display and rendering of posts
 
 export const Renderer = (() => {
-  // Creates jQuery element for a single comment
-  const createCommentElement = (comment, postId) => {
-    const $commentWrapper = $("<div>").addClass("comment-wrapper");
-
-    const $commentDiv = $("<div>")
-      .addClass("comment")
-      .attr("data-id", comment.id)
-      .text(comment.text);
-
-    const $deleteBtn = $("<button>")
-      .addClass("delete-comment")
-      .attr("data-id", comment.id)
-      .attr("data-post-id", postId)
-      .text("X");
-
-    $commentWrapper.append($commentDiv).append($deleteBtn);
-
-    return $commentWrapper;
+  // Creates HTML string for a single comment
+  const createCommentHTML = (comment, postId) => {
+    return `
+      <div class="comment-wrapper">
+        <div class="comment" data-id="${comment.id}">${comment.text}</div>
+        <button class="delete-comment" data-id="${comment.id}" data-post-id="${postId}">X</button>
+      </div>
+    `;
   };
 
-  // Creates jQuery element for a single post
-  const createPostElement = (post) => {
-    const $postDiv = $("<div>").addClass("post").attr("data-id", post.id);
+  // Creates HTML string for a single post
+  const createPostHTML = (post) => {
+    const commentsHTML = post.comments
+      .map((comment) => createCommentHTML(comment, post.id))
+      .join("");
 
-    // Post text
-    const $postText = $("<div>").addClass("post-text").text(post.text);
-
-    // Delete post button
-    const $deleteBtn = $("<button>")
-      .addClass("delete-post")
-      .attr("data-id", post.id)
-      .text("Delete Post");
-
-    // Comments container
-    const $commentsDiv = $("<div>").addClass("comments");
-
-    // Render all comments for this post
-    post.comments.forEach((comment) => {
-      const $commentEl = createCommentElement(comment, post.id);
-      $commentsDiv.append($commentEl);
-    });
-
-    // Comment input
-    const $commentInput = $("<input>")
-      .attr("type", "text")
-      .attr("placeholder", "Got something to say?")
-      .addClass("comment-input");
-
-    // Comment button
-    const $commentBtn = $("<button>")
-      .addClass("comment-button")
-      .attr("data-post-id", post.id)
-      .text("Comment");
-
-    // Assemble the post
-    $postDiv
-      .append($postText)
-      .append($deleteBtn)
-      .append($commentsDiv)
-      .append($commentInput)
-      .append($commentBtn);
-
-    return $postDiv;
+    return `
+      <div class="post" data-id="${post.id}">
+        <div class="post-text">${post.text}</div>
+        <button class="delete-post" data-id="${post.id}">Delete Post</button>
+        <div class="comments">
+          ${commentsHTML}
+        </div>
+        <input type="text" class="comment-input" placeholder="Got something to say?">
+        <button class="comment-button" data-post-id="${post.id}">Comment</button>
+      </div>
+    `;
   };
 
   // Public function: renders all posts to the DOM
@@ -75,16 +39,13 @@ export const Renderer = (() => {
 
     // Handle empty posts or error message
     if (!Array.isArray(posts)) {
-      const $messageDiv = $("<div>").addClass("no-posts-message").text(posts);
-      $postsContainer.append($messageDiv);
+      $postsContainer.append(`<div class="no-posts-message">${posts}</div>`);
       return;
     }
 
     // Loop through each post and append HTML to #posts
-    posts.forEach((post) => {
-      const $postElement = createPostElement(post);
-      $postsContainer.append($postElement);
-    });
+    const postsHTML = posts.map((post) => createPostHTML(post)).join("");
+    $postsContainer.append(postsHTML);
   };
 
   // Expose public API
