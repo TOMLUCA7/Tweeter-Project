@@ -12,21 +12,15 @@
     </div>
     <main class="container-body">
         <div class="inputPostsAndButton">
-            <input type="text" placeholder="What's on your mind ?" >
-            <button class="comment-button">Twit</button>
+            <input type="text" id="post-input" placeholder="What's on your mind ?" >
+            <button class="twit-button">Twit</button>
         </div>
-        <div class="post" data-id="p1">
-            <div class="post-text">Post content here</div>
-            <div class="delete" data-id="p1">Delete Post</div>
-            <div class="comments">
-                <div class="comment" data-id="c1">Comment text</div>
-                <div class="delete-comment" data-id="c1">X</div>
-                <!-- More comments... -->
-            </div>
-            <input type="text" placeholder="Got something to say?" class="comment-input">
-            <button class="comment-button">Comment</button>
+        <div id="posts">
+            <!-- Posts will be rendered here by the Renderer -->
         </div>
     </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="main.js"></script>
     
 </body>
 </html>

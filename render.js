@@ -1,101 +1,89 @@
 // Manages the display and rendering of posts
 
 export const Renderer = (() => {
-  // Creates the HTML for a single comment
+  // Creates jQuery element for a single comment
   const createCommentElement = (comment, postId) => {
-    const commentWrapper = document.createElement("div");
-    commentWrapper.className = "comment-wrapper";
+    const $commentWrapper = $("<div>").addClass("comment-wrapper");
 
-    const commentDiv = document.createElement("div");
-    commentDiv.className = "comment";
-    commentDiv.dataset.id = comment.id;
-    commentDiv.textContent = comment.text;
+    const $commentDiv = $("<div>")
+      .addClass("comment")
+      .attr("data-id", comment.id)
+      .text(comment.text);
 
-    const deleteBtn = document.createElement("div");
-    deleteBtn.className = "delete-comment";
-    deleteBtn.dataset.id = comment.id;
-    deleteBtn.dataset.postId = postId;
-    deleteBtn.textContent = "X";
+    const $deleteBtn = $("<button>")
+      .addClass("delete-comment")
+      .attr("data-id", comment.id)
+      .attr("data-post-id", postId)
+      .text("X");
 
-    commentWrapper.appendChild(commentDiv);
-    commentWrapper.appendChild(deleteBtn);
+    $commentWrapper.append($commentDiv).append($deleteBtn);
 
-    return commentWrapper;
+    return $commentWrapper;
   };
 
-  // Creates the HTML for a single post
+  // Creates jQuery element for a single post
   const createPostElement = (post) => {
-    const postDiv = document.createElement("div");
-    postDiv.className = "post";
-    postDiv.dataset.id = post.id;
+    const $postDiv = $("<div>").addClass("post").attr("data-id", post.id);
 
     // Post text
-    const postText = document.createElement("div");
-    postText.className = "post-text";
-    postText.textContent = post.text;
+    const $postText = $("<div>").addClass("post-text").text(post.text);
 
     // Delete post button
-    const deleteBtn = document.createElement("div");
-    deleteBtn.className = "delete";
-    deleteBtn.dataset.id = post.id;
-    deleteBtn.textContent = "Delete Post";
+    const $deleteBtn = $("<button>")
+      .addClass("delete-post")
+      .attr("data-id", post.id)
+      .text("Delete Post");
 
     // Comments container
-    const commentsDiv = document.createElement("div");
-    commentsDiv.className = "comments";
+    const $commentsDiv = $("<div>").addClass("comments");
 
     // Render all comments for this post
     post.comments.forEach((comment) => {
-      const commentEl = createCommentElement(comment, post.id);
-      commentsDiv.appendChild(commentEl);
+      const $commentEl = createCommentElement(comment, post.id);
+      $commentsDiv.append($commentEl);
     });
 
     // Comment input
-    const commentInput = document.createElement("input");
-    commentInput.type = "text";
-    commentInput.placeholder = "Got something to say?";
-    commentInput.className = "comment-input";
+    const $commentInput = $("<input>")
+      .attr("type", "text")
+      .attr("placeholder", "Got something to say?")
+      .addClass("comment-input");
 
     // Comment button
-    const commentBtn = document.createElement("button");
-    commentBtn.className = "comment-button";
-    commentBtn.dataset.postId = post.id;
-    commentBtn.textContent = "Comment";
+    const $commentBtn = $("<button>")
+      .addClass("comment-button")
+      .attr("data-post-id", post.id)
+      .text("Comment");
 
     // Assemble the post
-    postDiv.appendChild(postText);
-    postDiv.appendChild(deleteBtn);
-    postDiv.appendChild(commentsDiv);
-    postDiv.appendChild(commentInput);
-    postDiv.appendChild(commentBtn);
+    $postDiv
+      .append($postText)
+      .append($deleteBtn)
+      .append($commentsDiv)
+      .append($commentInput)
+      .append($commentBtn);
 
-    return postDiv;
+    return $postDiv;
   };
 
   // Public function: renders all posts to the DOM
   const renderPosts = (posts) => {
-    const main = document.querySelector("main");
+    const $postsContainer = $("#posts");
 
-    // Keep the input section (first child of main)
-    const inputSection = main.querySelector("div:first-child");
-
-    // Clear existing posts (everything after the input section)
-    const existingPosts = main.querySelectorAll(".post");
-    existingPosts.forEach((post) => post.remove());
+    // First empty the #posts element
+    $postsContainer.empty();
 
     // Handle empty posts or error message
     if (!Array.isArray(posts)) {
-      const messageDiv = document.createElement("div");
-      messageDiv.className = "no-posts-message";
-      messageDiv.textContent = posts;
-      main.appendChild(messageDiv);
+      const $messageDiv = $("<div>").addClass("no-posts-message").text(posts);
+      $postsContainer.append($messageDiv);
       return;
     }
 
-    // Render each post
+    // Loop through each post and append HTML to #posts
     posts.forEach((post) => {
-      const postElement = createPostElement(post);
-      main.appendChild(postElement);
+      const $postElement = createPostElement(post);
+      $postsContainer.append($postElement);
     });
   };
 
