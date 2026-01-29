@@ -1,0 +1,229 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f5f8fa;
+  color: #14171a;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Header */
+.container-hader {
+  background: linear-gradient(135deg, #1da1f2 0%, #0d8ecf 100%);
+  padding: 16px 20px;
+  box-shadow: 0 2px 10px rgba(29, 161, 242, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Main container */
+.container-body {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* New post input section */
+.inputPostsAndButton {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+#post-input {
+  flex: 1;
+  border: 2px solid #e1e8ed;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#post-input:focus {
+  border-color: #1da1f2;
+}
+
+.twit-button {
+  background: linear-gradient(135deg, #1da1f2 0%, #0d8ecf 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.twit-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(29, 161, 242, 0.4);
+}
+
+.twit-button:active {
+  transform: translateY(0);
+}
+
+/* Posts container */
+#posts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Individual post */
+.post {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.post:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.post-text {
+  font-size: 18px;
+  margin-bottom: 12px;
+  word-wrap: break-word;
+}
+
+.delete-post {
+  background: none;
+  border: 1px solid #e0245e;
+  color: #e0245e;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-post:hover {
+  background: #e0245e;
+  color: white;
+}
+
+/* Comments section */
+.comments {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e1e8ed;
+}
+
+.comment-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #f5f8fa;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.comment {
+  font-size: 14px;
+  color: #536471;
+  flex: 1;
+}
+
+.delete-comment {
+  background: none;
+  border: none;
+  color: #657786;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.delete-comment:hover {
+  background: #ffebee;
+  color: #e0245e;
+}
+
+/* Comment input */
+.comment-input {
+  width: 100%;
+  border: 1px solid #e1e8ed;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  margin-top: 12px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.comment-input:focus {
+  border-color: #1da1f2;
+}
+
+.comment-button {
+  background: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s ease;
+}
+
+.comment-button:hover {
+  background: #0d8ecf;
+}
+
+/* No posts message */
+.no-posts-message {
+  text-align: center;
+  color: #657786;
+  font-size: 18px;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 16px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container-body {
+    padding: 12px;
+  }
+
+  .inputPostsAndButton {
+    flex-direction: column;
+  }
+
+  .twit-button {
+    width: 100%;
+  }
+
+  .post {
+    padding: 16px;
+  }
+}
