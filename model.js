@@ -1,7 +1,7 @@
 // Handles data operations for posts and comments
 
-const postIdCounter = 0; // to count total posts
-const commentIdCounter = 0; // to count total comments
+let postIdCounter = 0; // to count total posts
+let commentIdCounter = 6; // to count total comments (starting at 6 since c1-c6 exist)
 
 const Posts = [
   {
@@ -59,9 +59,9 @@ export const removePost = (postID) => {
 
 // adds a comment to a specific post
 export const addComment = (postID, text) => {
-  const post = Posts.find((p) => postID === p);
+  const post = Posts.find((p) => postID === p.id);
   if (post) {
-    const newCommentId = `c${++commentIdCounter}`;
+    const newCommentId = `c${commentIdCounter++}`;
     post.comments.push({
       id: newCommentId,
       text: text,

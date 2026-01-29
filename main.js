@@ -9,25 +9,97 @@ import {
 
 import { Renderer } from "./render.js";
 
-// test all functions
+// Controller - handles user interactions
+const Controller = (() => {
+  // Re-render posts after any data change
+  const refresh = () => {
+    Renderer.renderPosts(getPosts());
+  };
 
-// // Test adding a post
-// addPost("This is my own post!");
-// console.log(getPosts());
-// // Should add: {text: "This is my own post!", id: "p3", comments: []}
+  // Handle creating a new post
+  const handleAddPost = () => {
+    const $input = $("#post-input");
+    const text = $input.val().trim();
 
-// // Test removing a post
-// removePost("p1");
-// console.log(getPosts());
-// // Should only have two posts left
+    if (text) {
+      addPost(text);
+      $input.val(""); // Clear input
+      refresh();
+    }
+  };
 
-// // Test adding comments
-// addComment("p3", "Damn straight it is!");
-// addComment("p2", "Second the best!");
-// console.log(getPosts());
+  // Handle deleting a post
+  const handleDeletePost = (postId) => {
+    removePost(postId);
+    refresh();
+  };
 
-// // Test removing comments
-// removeComment("p2", "c6");
-// console.log(getPosts());
+  // Handle adding a comment to a post
+  const handleAddComment = (postId, $postElement) => {
+    const $input = $postElement.find(".comment-input");
+    const text = $input.val().trim();
 
-Renderer.renderPosts(getPosts());
+    if (text) {
+      addComment(postId, text);
+      $input.val(""); // Clear input
+      refresh();
+    }
+  };
+
+  // Handle deleting a comment
+  const handleDeleteComment = (postId, commentId) => {
+    removeComment(postId, commentId);
+    refresh();
+  };
+
+  // Initialize all event listeners
+  const init = () => {
+    // Twit button - creates new posts
+    $(".twit-button").on("click", handleAddPost);
+
+    // Allow pressing Enter in post input
+    $("#post-input").on("keypress", (e) => {
+      if (e.key === "Enter") {
+        handleAddPost();
+      }
+    });
+
+    // Event delegation for dynamically created elements
+    $("#posts").on("click", ".delete-post", function () {
+      const postId = $(this).data("id");
+      handleDeletePost(postId);
+    });
+
+    $("#posts").on("click", ".comment-button", function () {
+      const postId = $(this).data("post-id");
+      const $postElement = $(this).closest(".post");
+      handleAddComment(postId, $postElement);
+    });
+
+    $("#posts").on("click", ".delete-comment", function () {
+      const commentId = $(this).data("id");
+      const postId = $(this).data("post-id");
+      handleDeleteComment(postId, commentId);
+    });
+
+    // Allow pressing Enter in comment input
+    $("#posts").on("keypress", ".comment-input", function (e) {
+      if (e.key === "Enter") {
+        const $postElement = $(this).closest(".post");
+        const postId = $postElement.data("id");
+        handleAddComment(postId, $postElement);
+      }
+    });
+  };
+
+  return {
+    init,
+    refresh,
+  };
+})();
+
+// Initialize the app
+$(document).ready(() => {
+  Controller.init();
+  Controller.refresh();
+});
